@@ -5,7 +5,7 @@ import { FaBookReader, FaShoppingCart } from 'react-icons/fa'
 
 const Navbar = () => {
     return (
-        <div className='sticky top-0 flex py-5 px-6 bg-blue-200'>
+        <div className='z-10 sticky top-0 flex py-5 px-6 bg-blue-200'>
             <div className='flex max-w-7xl w-full mx-auto'>
                 <div className='flex items-center gap-3'>
                     <FaBookReader size={20} />
