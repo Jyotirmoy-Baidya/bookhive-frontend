@@ -16,7 +16,7 @@ const LandingPage = () => {
                     <p className='mt-4 text-gray-600'>Discover your next favorite read today!</p>
 
                     <div className='flex w-full mt-24 gap-2'>
-                        <input type="text" name="" id="" className='text-sm w-[50%] focus:outline-none border border-transparent focus:border-black/30 bg-slate-200/40 py-2 px-2 rounded-lg' onChange={(e) => setSearch(e.target.value)} placeholder='What book are you searching for' />
+                        <input type="text" name="" id="" className='text-sm w-[50%] focus:outline-none border border-transparent focus:border-black/30 bg-slate-200/40 py-2 px-2 rounded-lg' onChange={(e) => setSearch(e.target.value)} placeholder='What book are you searching for' value={search} />
 
                         <div className='cursor-pointer bg-blue-400 py-2 px-5 rounded-lg shadow shadow-gray-500/40 text-white'>
                             Search
