@@ -1,52 +1,52 @@
 import React from 'react'
 
-const tags = ['Fiction', 'Fiction', 'Fiction', 'Fiction']
+const tags = ['Fiction', 'Mystery', 'Horror', 'Thriller']
 
 const books = [
     {
         name: "The Great Gatsby",
         price: 299,
-        image: "/bookcover.png"
+        image: "/book1.jpg"
     },
     {
         name: "To Kill a Mockingbird",
         price: 349,
-        image: "/bookcover.png"
+        image: "/book2.jpg"
     },
     {
         name: "1984",
         price: 279,
-        image: "/bookcover.png"
+        image: "/book3.jpg"
     },
     {
         name: "The Catcher in the Rye",
         price: 259,
-        image: "/bookcover.png"
+        image: "/book4.jpg"
     },
     {
         name: "Pride and Prejudice",
         price: 319,
-        image: "/bookcover.png"
+        image: "/book5.jpg"
     },
     {
         name: "Sapiens: A Brief History of Humankind",
         price: 449,
-        image: "/bookcover.png"
+        image: "/book6.jpg"
     },
     {
         name: "Atomic Habits",
         price: 399,
-        image: "/bookcover.png"
+        image: "/book7.jpg"
     },
     {
         name: "The Alchemist",
         price: 289,
-        image: "/bookcover.png"
+        image: "/book8.jpg"
     },
     {
         name: "Rich Dad Poor Dad",
         price: 329,
-        image: "/bookcover.png"
+        image: "/book9.jpg"
     }
 ];
 
@@ -81,7 +81,7 @@ const ReccomendedBooks = () => {
                                 <h2 className="text-lg font-semibold text-gray-800 mb-1">{book.name}</h2>
                                 <p className="text-gray-600 mb-3">₹{book.price}</p>
                                 <button
-                                    // onClick={() => onAddToCart(book)}
+                                    onClick={() => onAddToCart(book)}
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-colors"
                                 >
                                     Add to Cart

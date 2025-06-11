@@ -11,18 +11,18 @@ const Genre = () => {
                 </div>
 
                 <div className='w-full bg-blue-300 flex flex-col justify-center py-4 rounded px-1 items-center gap-2'>
-                    <p>Fiction</p>
+                    <p>Thriller</p>
                     <img src="/landingimage.png" alt="" className='h-32' />
                 </div>
                 <div className='w-full bg-blue-300 flex flex-col justify-center py-4 rounded px-1 items-center gap-2'>
-                    <p>Fiction</p>
+                    <p>Sci-fi</p>
                     <img src="/landingimage.png" alt="" className='h-32' />
                 </div>
                 <div className='w-full bg-blue-300 flex flex-col justify-center py-4 rounded px-1 items-center gap-2'>
-                    <p>Fiction</p>
+                    <p>Horror</p>
                     <img src="/landingimage.png" alt="" className='h-32' />
                 </div><div className='w-full bg-blue-300 flex flex-col justify-center py-4 rounded px-1 items-center gap-2'>
-                    <p>Fiction</p>
+                    <p>Mystery</p>
                     <img src="/landingimage.png" alt="" className='h-32' />
                 </div>
             </div>

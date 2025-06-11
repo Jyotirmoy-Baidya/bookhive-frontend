@@ -8,7 +8,7 @@ const Register = () => {
 
   const handleRegister = async (userDetails) => {
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/register', {
+      const res = await fetch('http://localhost:3000/api/v1/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userDetails),
@@ -18,7 +18,7 @@ const Register = () => {
       if (!res.ok) throw new Error(data.message || 'Registration failed');
 
       localStorage.setItem('token', data.data);
-      navigate('/');
+      navigate('/landing');
     } catch (err) {
       setError(err.message);
     }

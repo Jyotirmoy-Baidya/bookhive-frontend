@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleLogin = async (credentials) => {
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/login', {
+      const res = await fetch('http://localhost:3000/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -20,7 +20,7 @@ const Login = () => {
       if (!res.ok) throw new Error(data.message || 'Login failed');
 
       localStorage.setItem('token', data.data);
-      navigate('/');
+      navigate('/landing');
     } catch (err) {
       setError(err.message);
     }
