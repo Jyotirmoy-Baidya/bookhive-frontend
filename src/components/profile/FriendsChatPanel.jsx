@@ -8,7 +8,9 @@ const FriendsChatPanel = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
-    const [invites, setInvites] = useState([]);
+    const [invitess, setInvites] = useState([]);
+
+    const [friend, setFriends] = useState([]);
 
     const getPendingRequests = async () => {
         try {
@@ -24,7 +26,36 @@ const FriendsChatPanel = () => {
             const data = await res.json();
             console.log(data);
 
-            // setInvites(data.data.sent);
+            setInvites(data.data.receivedRequest);
+            console.log(data.data.receivedRequest)
+
+            if (!res.ok) throw new Error(data.message || 'Failed to fetch pending requests');
+
+            console.log('Pending friend requests:', data);
+            return data;
+        } catch (err) {
+            console.error('Error fetching pending requests:', err);
+            toast.error(err.message || 'Something went wrong');
+            return null;
+        }
+    };
+
+    const getUser = async () => {
+        try {
+            const res = await fetch('http://localhost:3001/api/v1/user-connection/get-connected-users', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getToken()}` // Include only if required
+                },
+                credentials: 'include', // Important for cookie-based session
+            });
+
+            const data = await res.json();
+            console.log(data);
+
+            setFriends(data.data);
+            console.log(data.data)
 
             if (!res.ok) throw new Error(data.message || 'Failed to fetch pending requests');
 
@@ -39,6 +70,7 @@ const FriendsChatPanel = () => {
 
     useEffect(() => {
         getPendingRequests();
+        getUser();
     }, [])
 
     const invites = [
@@ -52,12 +84,62 @@ const FriendsChatPanel = () => {
     ];
 
     const handleAccept = (id) => {
-        console.log('Accepted:', id);
+
     };
 
-    const handleReject = (id) => {
-        console.log('Rejected:', id);
+    const handleReject = async (id) => {
+
     };
+
+    const acceptFriendRequest = async (requestId) => {
+        try {
+            const token = getToken();
+
+            const res = await fetch(`http://localhost:3001/api/v1/user-connection/accept-request/${requestId}`, {
+                method: 'POST', // Confirm this is POST on your backend
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                credentials: 'include', // if your backend uses cookies too
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.message || 'Failed to accept request');
+
+            console.log('Friend request accepted:', data);
+            // Optionally update state/UI
+        } catch (err) {
+            console.error('Error accepting friend request:', err.message);
+        }
+    };
+
+    const rejectFriendRequest = async (requestId) => {
+        const token = getToken();
+        try {
+            const res = await fetch(`http://localhost:3001/api/v1/user-connection/reject-received-request/${requestId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                credentials: 'include', // ensures cookies/session are sent
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to reject request');
+            }
+
+            console.log('Request rejected:', data);
+            // Optional: update UI or notify user
+        } catch (err) {
+            console.error('Error rejecting request:', err.message);
+        }
+    };
+
 
     const sendMessage = () => {
         if (!input.trim()) return;
@@ -69,7 +151,7 @@ const FriendsChatPanel = () => {
         }, 800);
     };
 
-    const list = showFriends ? friends : invites;
+    const list = showFriends ? friends : invitess;
 
     return (
         <div className="flex flex-col md:flex-row gap-6 p-6 bg-gray-100 min-h-screen">
@@ -102,23 +184,28 @@ const FriendsChatPanel = () => {
                     {list.length === 0 ? (
                         <p className="text-gray-500">No users.</p>
                     ) : (
-                        list.map((user) => (
+                        list.map((user, i) => (
                             <li
-                                key={user.id}
+                                key={i}
                                 className={`flex items-center justify-between p-2 rounded-md hover:bg-gray-100 cursor-pointer ${selectedUser?.id === user.id ? 'bg-indigo-100' : ''
                                     }`}
                                 onClick={() => setSelectedUser(user)}
                             >
-                                <div className="flex items-center gap-3">
-                                    <img src={user.avatar} alt="" className="w-10 h-10 rounded-full" />
-                                    <span className="font-medium text-gray-800">{user.name}</span>
+                                <div className='flex flex-col'>
+                                    <div className="flex items-center gap-3">
+
+                                        <span className="font-medium text-gray-800">{user.user.user_name}</span>
+                                    </div>
+                                    <div>
+                                        {user.message}
+                                    </div>
                                 </div>
                                 {!showFriends && (
                                     <div className="flex gap-3">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleAccept(user.id);
+                                                acceptFriendRequest(user.user._id);
                                             }}
                                             className="text-green-950 py-2 px-2 bg-green-300 hover:bg-green-400 text-sm rounded shadow"
                                         >
@@ -127,7 +214,7 @@ const FriendsChatPanel = () => {
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleReject(user.id);
+                                                rejectFriendRequest(user.user._id);
                                             }}
                                             className="text-red-500 text-sm hover:underline"
                                         >
