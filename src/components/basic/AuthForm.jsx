@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const AuthForm = ({ title, onSubmit, error, isRegister = false }) => {
   const [email, setEmail] = useState('');
@@ -49,6 +50,10 @@ const AuthForm = ({ title, onSubmit, error, isRegister = false }) => {
         />
 
         <button type="submit" style={styles.button}>{title}</button>
+
+        <div>{
+          isRegister ? <div>Have an account? <NavLink to='/login'>Login</NavLink></div> : <div>Don't have an account? <NavLink to={'/register'}>Register</NavLink></div>
+        }</div>
       </form>
     </div>
   );

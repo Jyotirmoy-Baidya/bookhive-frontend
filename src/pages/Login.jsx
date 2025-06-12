@@ -4,7 +4,7 @@ import AuthForm from '../components/basic/AuthForm';
 
 const Login = () => {
   const [error, setError] = useState('');
-  
+
 
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const Login = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Login failed');
 
-      localStorage.setItem('token', data.data);
+      document.cookie = `token=${data.data}; path=/; secure; samesite=strict`;
       navigate('/landing');
     } catch (err) {
       setError(err.message);
