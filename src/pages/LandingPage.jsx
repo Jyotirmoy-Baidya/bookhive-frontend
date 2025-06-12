@@ -1,10 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/basic/Navbar'
 import Genre from '../components/landing/Genre'
 import ReccomendedBooks from '../components/landing/ReccomendedBooks'
+import { getToken } from '../utils/GetToken'
+import BookGrid from '../components/Books/BookGrid'
 
 const LandingPage = () => {
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState("");
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const fetchBookDetails = async () => {
+            try {
+                const res = await fetch('http://localhost:3001/api/v1/books/books', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${getToken()}` // if needed
+                    },
+                    credentials: 'include',
+                });
+
+                const data = await res.json();
+                setBooks(data.data);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchBookDetails();
+    }, [])
     return (
         <div className='flex flex-col min-h-screen'>
             <Navbar />
@@ -33,6 +57,11 @@ const LandingPage = () => {
             <Genre />
 
             <ReccomendedBooks />
+            {
+                books &&
+                <BookGrid books={books} />
+            }
+
         </div>
     )
 }

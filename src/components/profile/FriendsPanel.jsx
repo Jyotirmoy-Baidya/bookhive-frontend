@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { getToken } from '../../utils/GetToken';
 
 const FriendsPanel = () => {
     const [showFriends, setShowFriends] = useState(false);
@@ -13,6 +15,38 @@ const FriendsPanel = () => {
         { id: 2, name: 'Tina Roy', avatar: 'https://i.pravatar.cc/150?img=12' },
         { id: 3, name: 'Nitin Kumar', avatar: 'https://i.pravatar.cc/150?img=15' },
     ];
+
+
+    const getPendingRequests = async () => {
+        try {
+            const res = await fetch('http://localhost:3001/api/v1/user-connection/get-pending-request-details', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${getToken()}` // Include only if required
+                },
+                credentials: 'include', // Important for cookie-based session
+            });
+
+            const data = await res.json();
+            console.log(data);
+
+            if (!res.ok) throw new Error(data.message || 'Failed to fetch pending requests');
+
+            console.log('Pending friend requests:', data);
+            return data;
+        } catch (err) {
+            console.error('Error fetching pending requests:', err);
+            toast.error(err.message || 'Something went wrong');
+            return null;
+        }
+    };
+
+    useEffect(() => {
+        getPendingRequests();
+    }, [])
+
+
 
     const handleAccept = (id) => {
         console.log('Accepted invite from ID:', id);
