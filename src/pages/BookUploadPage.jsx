@@ -30,7 +30,10 @@ export default function BookUploadPage() {
             .catch(err => toast.error('Failed to load tags', err));
     }, []);
 
-    const getToken = () => localStorage.getItem('token'); // adjust as per auth setup
+    const getToken = () => {
+        const match = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
+        return match ? match[2] : null;
+    };// adjust as per auth setup
 
     const handleImageChange = async (e) => {
         const files = Array.from(e.target.files);
